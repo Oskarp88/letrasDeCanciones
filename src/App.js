@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import Formulario from './components/Formulario';
+
 
 function App() {
+  const[letra, setLetra]=useState({});
+
+  useEffect(()=>{
+    if(Object.keys(letra).length===0)return;
+
+    const consultarApiLetra = async ()=>{
+        const {artista,cancion}=letra;
+        const url = `https://api.lyrics.ovh/v1/${artista}/${cancion}`;
+        const result = await fetch(url);
+        const response = await result.json();
+        console.log(response);
+    }
+    consultarApiLetra();
+  },[letra]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+       <Formulario setLetra={setLetra}/>
+    </>
   );
 }
 
